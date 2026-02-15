@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Experiments Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .container{
+            background:white;
+            padding:40px;
+            border-radius:15px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+            text-align:center;
+            width:350px;
+        }
+
+        h1{
+            margin-bottom:25px;
+            color:#333;
+        }
+
+        nav{
+            display:flex;
+            flex-direction:column;
+            gap:15px;
+        }
+
+        nav a{
+            text-decoration:none;
+            padding:12px;
+            border-radius:8px;
+            background:#667eea;
+            color:white;
+            font-weight:500;
+            transition:0.3s;
+        }
+
+        nav a:hover{
+            background:#764ba2;
+            transform:translateY(-3px);
+            box-shadow:0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media(max-width:400px){
+            .container{
+                width:90%;
+                padding:25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Experiments</h1>
+        <nav>
+            <a href="Ecommerce/index.html">Experiment 1</a>
+            <a href="Ecommerce.html/index.html">Experiment 2</a>
+            <a href="WTLab/index.html">Experiment 3</a>
+            <a href="WTLab/index.html">Experiment 4</a>
+        </nav>
+    </div>
+</body>
+</html>
