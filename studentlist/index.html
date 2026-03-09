@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Table</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 30px 20px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .controls input[type="text"] {
+      padding: 7px 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 13px;
+      width: 200px;
+      outline: none;
+    }
+    .controls input[type="text"]:focus {
+      border-color: #4caf50;
+    }
+
+    .controls select {
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .controls button {
+      padding: 7px 16px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .controls button:hover {
+      background: #388e3c;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    thead tr {
+      background: #4caf50;
+      color: white;
+    }
+
+    thead th {
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e0e0e0;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f9f9f9; }
+    tbody tr:nth-child(even) { background: #fafafa; }
+    tbody tr:nth-child(even):hover { background: #f1f1f1; }
+
+    tbody td {
+      padding: 11px 16px;
+      font-size: 14px;
+      text-align: center;
+      color: #444;
+    }
+
+    .no-result {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Student Management Table</h2>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search student name" oninput="renderTable()"/>
+    <select id="courseFilter" onchange="renderTable()">
+      <option value="All">All Courses</option>
+      <option value="CS">CS</option>
+      <option value="IT">IT</option>
+      <option value="SE">SE</option>
+      <option value="ECE">ECE</option>
+      <option value="ME">ME</option>
+    </select>
+    <button onclick="sortByMarks()">Sort by Marks</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Marks</th>
+        <th>Course</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    let students = [
+      { id:1,  name:"Ali",    age:20, marks:85, course:"CS"  },
+      { id:2,  name:"Sara",   age:22, marks:72, course:"IT"  },
+      { id:3,  name:"John",   age:21, marks:90, course:"CS"  },
+      { id:4,  name:"Ayesha", age:23, marks:65, course:"SE"  },
+      { id:5,  name:"David",  age:20, marks:78, course:"IT"  },
+      { id:6,  name:"Rahul",  age:21, marks:88, course:"CS"  },
+      { id:7,  name:"Priya",  age:22, marks:55, course:"ECE" },
+      { id:8,  name:"Karan",  age:20, marks:93, course:"CS"  },
+      { id:9,  name:"Sneha",  age:23, marks:67, course:"ME"  },
+      { id:10, name:"Rohit",  age:21, marks:81, course:"IT"  },
+    ];
+
+    let sortAsc = true;
+
+    function sortByMarks() {
+      students.sort((a, b) => sortAsc ? a.marks - b.marks : b.marks - a.marks);
+      sortAsc = !sortAsc;
+      renderTable();
+    }
+
+    function renderTable() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const course = document.getElementById("courseFilter").value;
+
+      let filtered = students.filter(s => {
+        const matchName   = s.name.toLowerCase().includes(search);
+        const matchCourse = course === "All" || s.course === course;
+        return matchName && matchCourse;
+      });
+
+      const tbody = document.getElementById("tableBody");
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="no-result">No students found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => `
+        <tr>
+          <td>${s.id}</td>
+          <td>${s.name}</td>
+          <td>${s.age}</td>
+          <td>${s.marks}</td>
+          <td>${s.course}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Initial render
+    renderTable();
+  </script>
+
+</body>
+</html>
