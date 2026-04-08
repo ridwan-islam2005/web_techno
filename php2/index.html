@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Electronics Marketplace</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      padding: 30px 20px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 6px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 22px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .controls input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 220px;
+      outline: none;
+    }
+    .controls input[type="text"]:focus {
+      border-color: #ff6600;
+    }
+
+    .controls select {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .controls button {
+      padding: 8px 16px;
+      background: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .controls button:hover {
+      background: #cc5200;
+    }
+    .controls button.secondary {
+      background: #0077cc;
+    }
+    .controls button.secondary:hover {
+      background: #005fa3;
+    }
+
+    /* Summary Cards */
+    .summary {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: white;
+      border-radius: 8px;
+      padding: 14px 20px;
+      flex: 1;
+      min-width: 140px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      text-align: center;
+      border-top: 4px solid #ff6600;
+    }
+    .summary-card.blue  { border-top-color: #0077cc; }
+    .summary-card.green { border-top-color: #28a745; }
+    .summary-card.red   { border-top-color: #dc3545; }
+
+    .summary-card .s-val {
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+    }
+    .summary-card .s-label {
+      font-size: 12px;
+      color: #888;
+      margin-top: 3px;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    thead tr {
+      background: #ff6600;
+      color: white;
+    }
+
+    thead th {
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    thead th:hover { background: #e05a00; }
+
+    tbody tr {
+      border-bottom: 1px solid #e8e8e8;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fff5ee; }
+    tbody tr:nth-child(even) { background: #fafafa; }
+    tbody tr:nth-child(even):hover { background: #fff0e6; }
+
+    tbody td {
+      padding: 11px 16px;
+      font-size: 13.5px;
+      text-align: center;
+      color: #444;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-Mobile      { background: #e3f2fd; color: #0077cc; }
+    .badge-Laptop      { background: #f3e5f5; color: #7b1fa2; }
+    .badge-Audio       { background: #e8f5e9; color: #2e7d32; }
+    .badge-Accessories { background: #fff3e0; color: #e65100; }
+    .badge-TV          { background: #fce4ec; color: #c62828; }
+    .badge-Camera      { background: #e0f7fa; color: #006064; }
+
+    .stock-in    { color: #28a745; font-weight: bold; }
+    .stock-low   { color: #ff9800; font-weight: bold; }
+    .stock-out   { color: #dc3545; font-weight: bold; }
+
+    .price { font-weight: bold; color: #333; }
+
+    .cart-yes { color: #28a745; font-weight: bold; }
+    .cart-no  { color: #aaa; }
+
+    .rating { color: #f5a623; font-weight: bold; }
+
+    .no-result {
+      text-align: center;
+      padding: 24px;
+      color: #999;
+      font-style: italic;
+    }
+
+    .result-info {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🛒 Electronics Marketplace</h2>
+  <p class="subtitle">Product Inventory & Management Table</p>
+
+  <!-- Summary Cards -->
+  <div class="summary">
+    <div class="summary-card">
+      <div class="s-val" id="totalProducts">0</div>
+      <div class="s-label">Total Products</div>
+    </div>
+    <div class="summary-card blue">
+      <div class="s-val" id="inCartCount">0</div>
+      <div class="s-label">Items in Cart</div>
+    </div>
+    <div class="summary-card green">
+      <div class="s-val" id="cartTotal">₹0</div>
+      <div class="s-label">Cart Total</div>
+    </div>
+    <div class="summary-card red">
+      <div class="s-val" id="outOfStock">0</div>
+      <div class="s-label">Out of Stock</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="🔍 Search product name..." oninput="renderTable()"/>
+    <select id="categoryFilter" onchange="renderTable()">
+      <option value="All">All Categories</option>
+      <option value="Mobile">Mobile</option>
+      <option value="Laptop">Laptop</option>
+      <option value="Audio">Audio</option>
+      <option value="Accessories">Accessories</option>
+      <option value="TV">TV</option>
+      <option value="Camera">Camera</option>
+    </select>
+    <select id="cartFilter" onchange="renderTable()">
+      <option value="All">All Items</option>
+      <option value="cart">In Cart Only</option>
+      <option value="notcart">Not in Cart</option>
+    </select>
+    <select id="stockFilter" onchange="renderTable()">
+      <option value="All">All Stock</option>
+      <option value="In Stock">In Stock</option>
+      <option value="Low Stock">Low Stock</option>
+      <option value="Out of Stock">Out of Stock</option>
+    </select>
+    <button onclick="sortByPrice()">Sort by Price</button>
+    <button onclick="sortByRating()" class="secondary">Sort by Rating</button>
+  </div>
+
+  <div class="result-info" id="resultInfo"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Price (₹)</th>
+        <th>Rating</th>
+        <th>Stock</th>
+        <th>Brand</th>
+        <th>In Cart</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    let products = [
+      { id:1,  name:"iPhone 15",          category:"Mobile",      price:79999,  rating:4.8, stock:"In Stock",    brand:"Apple",    inCart:true  },
+      { id:2,  name:"Samsung Galaxy S24", category:"Mobile",      price:64999,  rating:4.6, stock:"In Stock",    brand:"Samsung",  inCart:false },
+      { id:3,  name:"MacBook Air M2",     category:"Laptop",      price:114999, rating:4.9, stock:"Low Stock",   brand:"Apple",    inCart:true  },
+      { id:4,  name:"Dell XPS 15",        category:"Laptop",      price:89999,  rating:4.5, stock:"In Stock",    brand:"Dell",     inCart:false },
+      { id:5,  name:"Sony WH-1000XM5",    category:"Audio",       price:24999,  rating:4.7, stock:"In Stock",    brand:"Sony",     inCart:true  },
+      { id:6,  name:"AirPods Pro 2",      category:"Audio",       price:19999,  rating:4.6, stock:"In Stock",    brand:"Apple",    inCart:false },
+      { id:7,  name:"Logitech MX Master", category:"Accessories", price:7999,   rating:4.5, stock:"In Stock",    brand:"Logitech", inCart:true  },
+      { id:8,  name:"Samsung 65\" QLED",  category:"TV",          price:94999,  rating:4.4, stock:"Low Stock",   brand:"Samsung",  inCart:false },
+      { id:9,  name:"Sony Alpha A7 IV",   category:"Camera",      price:229999, rating:4.8, stock:"Out of Stock",brand:"Sony",     inCart:false },
+      { id:10, name:"OnePlus 12",         category:"Mobile",      price:49999,  rating:4.4, stock:"In Stock",    brand:"OnePlus",  inCart:true  },
+      { id:11, name:"HP Spectre x360",    category:"Laptop",      price:129999, rating:4.6, stock:"In Stock",    brand:"HP",       inCart:false },
+      { id:12, name:"JBL Charge 5",       category:"Audio",       price:13999,  rating:4.3, stock:"In Stock",    brand:"JBL",      inCart:true  },
+      { id:13, name:"Mechanical Keyboard",category:"Accessories", price:4999,   rating:4.2, stock:"Out of Stock",brand:"Keychron", inCart:false },
+      { id:14, name:"LG OLED 55\"",       category:"TV",          price:119999, rating:4.7, stock:"In Stock",    brand:"LG",       inCart:true  },
+      { id:15, name:"Canon EOS R50",      category:"Camera",      price:74999,  rating:4.5, stock:"Low Stock",   brand:"Canon",    inCart:false },
+    ];
+
+    let priceSortAsc  = true;
+    let ratingSortAsc = false;
+
+    // ── Update summary cards ──
+    function updateSummary(filtered) {
+      document.getElementById("totalProducts").textContent = filtered.length;
+      const cartItems = filtered.filter(p => p.inCart);
+      document.getElementById("inCartCount").textContent  = cartItems.length;
+      const total = cartItems.reduce((sum, p) => sum + p.price, 0);
+      document.getElementById("cartTotal").textContent    = "₹" + total.toLocaleString("en-IN");
+      document.getElementById("outOfStock").textContent   = filtered.filter(p => p.stock === "Out of Stock").length;
+    }
+
+    function stockClass(stock) {
+      if (stock === "In Stock")    return "stock-in";
+      if (stock === "Low Stock")   return "stock-low";
+      return "stock-out";
+    }
+
+    function sortByPrice() {
+      products.sort((a, b) => priceSortAsc ? a.price - b.price : b.price - a.price);
+      priceSortAsc = !priceSortAsc;
+      renderTable();
+    }
+
+    function sortByRating() {
+      products.sort((a, b) => ratingSortAsc ? a.rating - b.rating : b.rating - a.rating);
+      ratingSortAsc = !ratingSortAsc;
+      renderTable();
+    }
+
+    function renderTable() {
+      const search   = document.getElementById("searchInput").value.toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+      const cartF    = document.getElementById("cartFilter").value;
+      const stockF   = document.getElementById("stockFilter").value;
+
+      let filtered = products.filter(p => {
+        const matchName     = p.name.toLowerCase().includes(search);
+        const matchCategory = category === "All" || p.category === category;
+        const matchCart     = cartF === "All" || (cartF === "cart" ? p.inCart : !p.inCart);
+        const matchStock    = stockF === "All" || p.stock === stockF;
+        return matchName && matchCategory && matchCart && matchStock;
+      });
+
+      updateSummary(filtered);
+
+      document.getElementById("resultInfo").textContent =
+        `Showing ${filtered.length} of ${products.length} products`;
+
+      const tbody = document.getElementById("tableBody");
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="no-result">No products found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td>${p.id}</td>
+          <td><b>${p.name}</b></td>
+          <td><span class="badge badge-${p.category}">${p.category}</span></td>
+          <td class="price">₹${p.price.toLocaleString("en-IN")}</td>
+          <td class="rating">⭐ ${p.rating}</td>
+          <td class="${stockClass(p.stock)}">${p.stock}</td>
+          <td>${p.brand}</td>
+          <td class="${p.inCart ? 'cart-yes' : 'cart-no'}">${p.inCart ? "✔ Yes" : "✘ No"}</td>
+        </tr>
+      `).join('');
+    }
+
+    renderTable();
+  </script>
+
+</body>
+</html>

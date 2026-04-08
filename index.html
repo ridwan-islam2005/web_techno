@@ -4,85 +4,209 @@
     <meta charset="UTF-8">
     <title>Experiments Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A dashboard showcasing all web technology experiments and PHP projects.">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
 
-        body{
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+        }
+
+        /* ── PHP Screenshot Cards ── */
+        .section-label {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            max-width: 960px;
+            margin: 0 auto 48px auto;
+        }
+
+        .img-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .img-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.28);
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .img-card-body {
+            padding: 14px 16px;
+        }
+
+        .img-card-body h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .img-card-body p {
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        .badge {
+            display: inline-block;
             background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 8px;
         }
 
-        .container{
-            background:white;
-            padding:40px;
-            border-radius:15px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.2);
-            text-align:center;
-            width:350px;
+        /* ── Nav Links ── */
+        .nav-container {
+            background: white;
+            padding: 36px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
-        h1{
-            margin-bottom:25px;
-            color:#333;
+        .nav-container h2 {
+            margin-bottom: 22px;
+            color: #444;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
-        nav{
-            display:flex;
-            flex-direction:column;
-            gap:15px;
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        nav a{
-            text-decoration:none;
-            padding:12px;
-            border-radius:8px;
-            background:#667eea;
-            color:white;
-            font-weight:500;
-            transition:0.3s;
+        nav a {
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.3s;
         }
 
-        nav a:hover{
-            background:#764ba2;
-            transform:translateY(-3px);
-            box-shadow:0 5px 15px rgba(0,0,0,0.2);
+        nav a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(102,126,234,0.45);
+            filter: brightness(1.08);
         }
 
-        @media(max-width:400px){
-            .container{
-                width:90%;
-                padding:25px;
-            }
+        @media (max-width: 500px) {
+            .page-title { font-size: 1.6rem; }
+            .nav-container { padding: 24px 20px; }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>My Experiments</h1>
+
+    <h1 class="page-title">My Experiments</h1>
+    <p class="page-subtitle">A collection of web technology labs &amp; PHP projects</p>
+
+    <!-- PHP Screenshot Cards -->
+    <p class="section-label">📸 PHP Experiment Screenshots</p>
+    <div class="image-grid">
+
+        <div class="img-card">
+            <img src="php1/Screenshot 2026-04-08 125115.png" alt="PHP Experiment 1 Screenshot">
+            <div class="img-card-body">
+                <h3>PHP Experiment 1</h3>
+                <p>php1 — Basic PHP introduction</p>
+                <span class="badge">PHP</span>
+            </div>
+        </div>
+
+        <div class="img-card">
+            <img src="php2/Screenshot 2026-04-08 125658.png" alt="PHP Experiment 2 Screenshot">
+            <div class="img-card-body">
+                <h3>PHP Experiment 2</h3>
+                <p>php2 — Forms &amp; data handling</p>
+                <span class="badge">PHP</span>
+            </div>
+        </div>
+
+        <div class="img-card">
+            <img src="php3/Screenshot 2026-04-08 130730.png" alt="PHP Experiment 3 Screenshot">
+            <div class="img-card-body">
+                <h3>PHP Experiment 3</h3>
+                <p>php3 — Advanced PHP concepts</p>
+                <span class="badge">PHP</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Experiment Links -->
+    <div class="nav-container">
+        <h2>🔗 All Experiments</h2>
         <nav>
-            <a href="Ecommerce/index.html">Experiment 1</a>
-            <a href="Ecommerce.html/index.html">Experiment 2</a>
-            <a href="WTLab/index.html">Experiment 3</a>
-            <a href="WTLab/index.html">Experiment 4</a>
-            <a href="calculator,html/index.html">Experiment 5</a>
-            <a href="calculator/index.html">Experiment 6</a>
-            <a href="registration-form/index.html">Experiment 7</a>
-            <a href="studentlist/index.html">Experiment 8</a>
-            <a href="marketplace/index.html">Experiment 9</a>
+            <a href="Ecommerce/index.html">Experiment 1 — Ecommerce</a>
+            <a href="Ecommerce.html/index.html">Experiment 2 — Ecommerce Alt</a>
+            <a href="WTLab/index.html">Experiment 3 — WT Lab</a>
+            <a href="WTLab/index.html">Experiment 4 — WT Lab</a>
+            <a href="calculator,html/index.html">Experiment 5 — Calculator</a>
+            <a href="calculator/index.html">Experiment 6 — Calculator</a>
+            <a href="registration-form/index.html">Experiment 7 — Registration Form</a>
+            <a href="studentlist/index.html">Experiment 8 — Student List</a>
+            <a href="marketplace/index.html">Experiment 9 — Marketplace</a>
         </nav>
     </div>
+
 </body>
 </html>
+
